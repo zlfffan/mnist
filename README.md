@@ -8,7 +8,12 @@ Clone this repository:
 ```
 git clone https://github.com/zlfffan/mnist-classification.git
 ```
-
+## Install dependencies
+```
+conda update conda
+conda create -n env_name python=x.x
+pip install matplotlib
+```
 ## Usage
 1. Run `train.py` to train the FCN model.
 2. Run `predict.py` to view the model's prediction results.
