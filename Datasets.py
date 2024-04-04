@@ -16,7 +16,7 @@ class myDatasets(Dataset):
 		self.data = scio.loadmat(img_dir)
 		self.mode = mode  # "train/test"
 		self.labels = [int(key[-1]) for key, values in self.data.items() for _ in range(len(values)) if
-					   key.startswith(self.mode)]
+		               key.startswith(self.mode)]
 		self.imgs = [value for key, values in self.data.items() for value in values if key.startswith(self.mode)]
 		self.transform = transform
 		self.target_transform = target_transform
@@ -35,8 +35,8 @@ class myDatasets(Dataset):
 		return img, label
 
 
-"""train_data = myDatasets(r"./mydata/mnist_all.mat", mode="train", transform=Compose([ToTensor(), Resize((224, 224))]))
-val_data = myDatasets(r"./mydata/mnist_all.mat", mode="test", transform=Compose([ToTensor(), Resize((224, 224))]))
-train_loader = DataLoader(train_data, batch_size=1, shuffle=True, num_workers=0)
-val_loader = DataLoader(val_data, batch_size=512, shuffle=False, num_workers=0)"""
-
+if __name__ == "__main__":
+	train_data = myDatasets(r"./mydata/mnist_all.mat", mode="train", transform=Compose([ToTensor(), Resize((224, 224))]))
+	val_data = myDatasets(r"./mydata/mnist_all.mat", mode="test", transform=Compose([ToTensor(), Resize((224, 224))]))
+	train_loader = DataLoader(train_data, batch_size=1, shuffle=True, num_workers=0)
+	val_loader = DataLoader(val_data, batch_size=512, shuffle=False, num_workers=0)
