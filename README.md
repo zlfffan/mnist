@@ -10,7 +10,7 @@ git clone https://github.com/zlfffan/mnist-classification.git
 ```
 
 ## Usage
-1. Run `train.py` to train the CNN model.
+1. Run `train.py` to train the FCN model.
 2. Run `predict.py` to view the model's prediction results.
 3. Run the following command to view the training process:
 ```
