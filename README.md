@@ -6,7 +6,7 @@ This repository contains code for training a fully Convolutional Network (FCN) m
 ## Installation
 Clone this repository:
 ```
-git clone https://github.com/zlfffan/mnist-classification.git
+git clone https://github.com/zlfffan/mnist.git
 ```
 ## Install dependencies
 ```
