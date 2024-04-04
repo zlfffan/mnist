@@ -40,7 +40,7 @@ val_size = len(val_data)
 best_acc = 0
 
 writer = tensorboard.SummaryWriter("run/my_model")
-# tensorboard --logdir=runs
+# tensorboard --logdir=run
 
 for epoch in range(epochs):
 	model.train()
