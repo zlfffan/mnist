@@ -26,10 +26,10 @@ train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_w
 val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=0)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(device)
+print(f"device : {device}")
 
 output_channel = 300
-model = my_model(output_channel)
+model = my_model(output_channel, mode="full_conn")
 model = model.to(device)
 loss_func = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0, momentum=0.95)

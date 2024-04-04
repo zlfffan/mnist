@@ -4,8 +4,9 @@ import torch
 
 
 class my_model(nn.Module):
-	def __init__(self, out_channel):
+	def __init__(self, out_channel, mode="full_conv"):
 		assert out_channel % 4 == 0, "output_channel can't be divided by 4"
+		assert mode in ["full_conv", "full_conn"], "mode not in [full_conv , full_conn]"
 		super().__init__()
 		self.convblock1 = nn.Sequential(
 			nn.Conv2d(1, int(out_channel / 2), kernel_size=3, padding=1, bias=False),
@@ -32,34 +33,36 @@ class my_model(nn.Module):
 			nn.Conv2d(int(out_channel / 2), out_channel, 1, bias=False),
 			nn.BatchNorm2d(out_channel)
 		)
-		self.classifier = nn.Sequential(nn.Linear(7 * 7 * out_channel, 7 * 7 * int(out_channel / 2)),
-		                                nn.ReLU(True),
-		                                nn.Linear(7 * 7 * int(out_channel / 2), 7 * 7 * int(out_channel / 2)),
-		                                nn.ReLU(True),
-		                                nn.Linear(7 * 7 * int(out_channel / 2), 10)
-		                                )
-		self.classifier = nn.Sequential(
-			nn.Conv2d(out_channel, int(out_channel / 2), kernel_size=1, stride=1, bias=False),
-			nn.BatchNorm2d(int(out_channel / 2)),
-			nn.ReLU(True),
-			nn.Conv2d(int(out_channel / 2), int(out_channel / 2), kernel_size=3, padding=1, stride=2, bias=False),
-			nn.BatchNorm2d(int(out_channel / 2)),
-			nn.ReLU(True),
-			nn.Conv2d(int(out_channel / 2), int(out_channel / 4), kernel_size=1, stride=1, bias=False),
-			nn.BatchNorm2d(int(out_channel / 4)),
-			nn.ReLU(True),
-			nn.Conv2d(int(out_channel / 4), int(out_channel / 4), kernel_size=3, padding=1, stride=2, bias=False),
-			nn.BatchNorm2d(int(out_channel / 4)),
-			nn.ReLU(True),
-			nn.Conv2d(int(out_channel / 4), 10, kernel_size=1, stride=1, bias=False),
-			nn.BatchNorm2d(10),
-			nn.ReLU(True),
-			nn.Conv2d(10, 10, kernel_size=3, padding=1, stride=2)
-		)
+		if mode == "full_conv":
+			self.classifier = nn.Sequential(
+				nn.Conv2d(out_channel, int(out_channel / 2), kernel_size=1, stride=1, bias=False),
+				nn.BatchNorm2d(int(out_channel / 2)),
+				nn.ReLU(True),
+				nn.Conv2d(int(out_channel / 2), int(out_channel / 2), kernel_size=3, padding=1, stride=2, bias=False),
+				nn.BatchNorm2d(int(out_channel / 2)),
+				nn.ReLU(True),
+				nn.Conv2d(int(out_channel / 2), int(out_channel / 4), kernel_size=1, stride=1, bias=False),
+				nn.BatchNorm2d(int(out_channel / 4)),
+				nn.ReLU(True),
+				nn.Conv2d(int(out_channel / 4), int(out_channel / 4), kernel_size=3, padding=1, stride=2, bias=False),
+				nn.BatchNorm2d(int(out_channel / 4)),
+				nn.ReLU(True),
+				nn.Conv2d(int(out_channel / 4), 10, kernel_size=1, stride=1, bias=False),
+				nn.BatchNorm2d(10),
+				nn.ReLU(True),
+				nn.Conv2d(10, 10, kernel_size=3, padding=1, stride=2)
+			)
+		else:
+			self.classifier = nn.Sequential(nn.Linear(7 * 7 * out_channel, 7 * 7 * int(out_channel / 2)),
+			                                nn.ReLU(True),
+			                                nn.Linear(7 * 7 * int(out_channel / 2), 7 * 7 * int(out_channel / 2)),
+			                                nn.ReLU(True),
+			                                nn.Linear(7 * 7 * int(out_channel / 2), 10)
+			                                )
 	
 	def get_lr(self, iteration, epochs, decay_rate=0.01):
 		init_lr = 1e-2
-		lr = init_lr * (decay_rate ** (iteration / (epochs-1)))
+		lr = init_lr * (decay_rate ** (iteration / (epochs - 1)))
 		return lr
 	
 	def forward(self, x):
