@@ -1,10 +1,4 @@
-import os
-import shutil
-import random
-
-import matplotlib.pyplot as plt
 from torchvision.transforms import Resize, ToTensor, Compose
-from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 
 
